@@ -1,0 +1,34 @@
+﻿@model CetStudentBook.Models.Book
+
+@{
+    ViewData["Title"] = "Delete Book";
+}
+
+<h2>Delete Book</h2>
+
+<div class="alert alert-warning mt-3">
+    Are you sure you want to delete this book?
+</div>
+
+<dl class="row">
+    <dt class="col-sm-3">Name</dt>
+    <dd class="col-sm-9">@Model.Name</dd>
+
+    <dt class="col-sm-3">Author</dt>
+    <dd class="col-sm-9">@Model.Author</dd>
+
+    <dt class="col-sm-3">Publish Date</dt>
+    <dd class="col-sm-9">@Model.PublishDate.ToString("yyyy-MM-dd")</dd>
+
+    <dt class="col-sm-3">Page Count</dt>
+    <dd class="col-sm-9">@Model.PageCount</dd>
+
+    <dt class="col-sm-3">Second Hand</dt>
+    <dd class="col-sm-9">@(Model.IsSecondHand ? "Yes" : "No")</dd>
+</dl>
+
+<form asp-action="DeleteConfirmed" method="post" class="d-flex gap-2">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <button type="submit" class="btn btn-danger">Confirm Delete</button>
+    <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+</form>
