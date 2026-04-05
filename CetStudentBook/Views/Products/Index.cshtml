@@ -1,0 +1,43 @@
+﻿@model IReadOnlyList<CetStudentBook.Models.Product>
+
+<h1>Products</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th class="text-end">Price</th>
+            <th class="text-end"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var p in Model)
+        {
+            <tr>
+                <td>@p.Name</td>
+                <td>@p.Category?.Name</td>
+                <td class="text-end">@p.Price</td>
+
+                <td class="text-end">
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <form asp-controller="Cart" asp-action="AddToCart" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="productId" value="@p.Id" />
+                            <button class="btn btn-sm btn-primary" type="submit">Add to Cart</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <a class="btn btn-sm btn-outline-secondary"
+                               asp-area="Identity"
+                               asp-page="/Account/Login">
+                            Login to add
+                        </a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
