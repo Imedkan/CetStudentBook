@@ -47,6 +47,30 @@ namespace CetStudentBook
             app.MapRazorPages()
                .WithStaticAssets();
 
+            using (var scope = app.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<CetStudentBook.Data.ApplicationDbContext>();
+
+                if (!db.Categories.Any())
+                {
+                    var book = new CetStudentBook.Models.Category { Name = "Book" };
+                    var computer = new CetStudentBook.Models.Category { Name = "Computer" };
+                    var novel = new CetStudentBook.Models.Category { Name = "Novel" };
+
+                    db.Categories.AddRange(book, computer, novel);
+                    db.SaveChanges();
+
+                    db.Products.AddRange(
+                        new CetStudentBook.Models.Product { Name = "Laptop", Price = 50000, CategoryId = computer.Id },
+                        new CetStudentBook.Models.Product { Name = "Keyboard", Price = 1500, CategoryId = computer.Id },
+                        new CetStudentBook.Models.Product { Name = "Novel A", Price = 250, CategoryId = novel.Id },
+                        new CetStudentBook.Models.Product { Name = "Book B", Price = 300, CategoryId = book.Id }
+                    );
+
+                    db.SaveChanges();
+                }
+            }
+
             app.Run();
         }
     }
